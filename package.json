@@ -5,8 +5,7 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "start": "next start",
-    "lint": "next lint"
+    "start": "next start"
   },
   "dependencies": {
     "@apollo/client": "^3.8.5",
@@ -28,6 +27,7 @@
   },
   "devDependencies": {
     "autoprefixer": "^10",
+    "encoding": "^0.1.13",
     "postcss": "^8",
     "prisma": "^5.4.2",
     "tailwindcss": "^3"
