@@ -61,19 +61,21 @@ const ReportsTable = () => {
     },
   ];
   const { data, loading, error } = useQuery(GET_REPORTS);
-  console.log(data, loading);
   if(loading){
     return(
       <h1>Loading...</h1>
-    )
+      )
+  }
+  else if (!loading){
+    console.log(data, loading);
   }
 const {user,isLoading} = useUser();
 console.log(user)
 if(!user){
-    return(
-        <h1>Not logged in</h1>
+  return(
+    <h1>Please log in to continue</h1>
     )
-}
+  }
   if(error){
     return(
       <h1>Error: ${error}</h1>
