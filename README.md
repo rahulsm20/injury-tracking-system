@@ -1,8 +1,24 @@
 # Injury Tracking System
 
 - Index 
+  - [Overview](#overview)
+    - [System Design](#system-design)
+    - [Database Design](#database-design)
   - [Tech Stack](#tech-stack)
   - [Steps to run locally](#steps-to-run-locally)
+
+## Overview
+- Next.js as the framework.
+- TailwindCSS and Ant for UI design.
+- Prisma as the ORM, GraphQL for data query and manipulation.
+- Apollo for GraphQL interactivity.
+- Auth0 for user authentication.
+
+### System Design
+![image](https://github.com/rahulsm20/injury-tracking-system/assets/77540672/aaa7af2a-043d-4fee-8662-f1b917c3b7b5)
+
+### Database Design 
+![database-design](https://github.com/rahulsm20/injury-tracking-system/assets/77540672/b48eb8f8-bc9e-43ba-b258-5aab966a15fc)
 
 ### Tech stack 
 - Next.js
@@ -10,7 +26,7 @@
 - Ant design
 - Auth0
 - Prisma
-- GraphQL (Apollo Server)
+- GraphQL + Apollo Client
 - PostgreSQL
 
 ### Steps to run locally 
@@ -39,3 +55,6 @@
    ```
    npm run dev
    ```
+
+
+
