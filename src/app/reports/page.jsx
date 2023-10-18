@@ -35,14 +35,14 @@ const ReportsTable = () => {
           dataIndex: "injuries",
           key: "body_part",
           render: (text, record) =>
-            text.map((injury) => injury.body_part).join(", "), // Access body_part from each injury
+            text.map((injury) => injury.body_part).join(", "), 
         },
         {
           title: "Description",
           dataIndex: "injuries",
           key: "description",
           render: (text, record) =>
-            text.map((injury) => injury.description).join(","), // Access text from the record parameter
+            text.map((injury) => injury.description).join(","), 
         },
       ],
       render: (text, record) => {
@@ -66,11 +66,7 @@ const ReportsTable = () => {
       <h1>Loading...</h1>
       )
   }
-  else if (!loading){
-    console.log(data, loading);
-  }
 const {user,isLoading} = useUser();
-console.log(user)
 if(!user){
   return(
     <h1>Please log in to continue</h1>

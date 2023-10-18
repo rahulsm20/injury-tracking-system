@@ -4,7 +4,6 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 
 const Navbar = () => {
   const { user, error, isLoading } = useUser();
-  console.log(user)
   return (
     <div className="navbar flex items-center justify-between top-0 left-0 z-10 p-4">
       <div>

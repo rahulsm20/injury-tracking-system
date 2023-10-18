@@ -8,18 +8,19 @@ import { useUser } from "@auth0/nextjs-auth0/client";
 const Page = () => {
     const {user,error,isLoading} = useUser();
     if(!user){
-        return(
-            <h1>Not logged in</h1>
+      return(
+        <h1>Not logged in</h1>
         )
-    }
-
-  const router = useRouter()
-  const [formData, setFormData] = useState({
-    reporter: "",
-    date: "",
-    time: "",
-    injuries: {},
-  });
+      }
+      
+      const router = useRouter()
+      const [formData, setFormData] = useState({
+        reporter: "",
+        date: "",
+        time: "",
+        injuries: {},
+      });
+      const [processing,setProcessing]  = useState(false);
 
   const handleBodyPartClick = (partName) => {
     setFormData((prevData) => {
@@ -53,6 +54,7 @@ const Page = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
+    setProcessing(true)
     if (
       formData.reporter === "" ||
       formData.date === "" ||
@@ -69,7 +71,12 @@ const Page = () => {
           description: formData.injuries[partName],
         })),
       };
-      createReport({ variables: { input } }).then(() => router.push('/reports'));
+      createReport({ variables: { input } })
+      .then(() => router.push('/reports'))
+      .catch((err)=>{
+        setProcessing(false)
+        console.log(err)
+      })
     }
   };
 
@@ -143,6 +150,7 @@ const Page = () => {
           </ul>
           {Object.keys(formData.injuries).length > 0 ? (
             <button type="submit" className="bg-blue-600 rounded-xl w-min p-2">
+              {processing ? <img src='/loading.svg'/>:<></>}
               Submit
             </button>
           ) : (
