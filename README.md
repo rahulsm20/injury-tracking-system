@@ -1,5 +1,7 @@
 # Injury Tracking System
-
+([Deployed Link](https://injury-tracking-system-ten.vercel.app/))  
+<strong>Both the view reports and create report pages are accessible only after authentication !!! 
+</strong>
 - Index 
   - [Overview](#overview)
     - [System Design](#system-design)
@@ -8,11 +10,13 @@
   - [Steps to run locally](#steps-to-run-locally)
 
 ## Overview
-- Next.js as the framework.
+- Used Next.js as the framework.
 - TailwindCSS and Ant for UI design.
+- Recharts for charting data.
 - Prisma as the ORM, GraphQL for data query and manipulation.
 - Apollo for GraphQL interactivity.
 - Auth0 for user authentication.
+- Next-PWA for PWA features
 
 ### System Design
 ![image](https://github.com/rahulsm20/injury-tracking-system/assets/77540672/aaa7af2a-043d-4fee-8662-f1b917c3b7b5)
@@ -28,6 +32,7 @@
 - Prisma
 - GraphQL + Apollo Client
 - PostgreSQL
+- Recharts
 
 ### Steps to run locally 
 1. Clone this repo 
