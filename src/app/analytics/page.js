@@ -16,13 +16,18 @@ import {
 } from "recharts";
 
 const page = () => {
-  var { data, loading, error } = useQuery(GET_REPORTER_ANALYTICS);
+  const { data, loading, error } = useQuery(GET_REPORTER_ANALYTICS);
+  if(error){
+    return(
+      <h1>{error}</h1>
+    )
+  }
   return loading ? (
     <></>
   ) : (
     <div>
       <h1 className="pt-10 pl-10 text-2xl">Analytics</h1>
-      <div className="grid grid-cols-1 md:grid-rows-2 lg:grid-cols-3 gap-5 justify-center items-center md:p-10 lg:p-20">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 justify-center items-center md:p-10 lg:p-20">
         <div className="flex flex-col gap-10">
           <h1>Reporters by Count of Reports</h1>
           <ResponsiveContainer width="100%" height={400}>

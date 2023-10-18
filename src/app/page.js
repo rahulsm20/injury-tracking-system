@@ -12,6 +12,16 @@ const Page = () => {
         <h1>Loading...</h1>
         )
       }
+      if(!user){
+        return(
+          <h1>Please login to access this feature</h1>
+        )
+      }
+      if(error){
+        return(
+          <h1>{error.message}</h1>
+        )
+      }
       
       const router = useRouter()
       const [formData, setFormData] = useState({
@@ -77,6 +87,7 @@ const Page = () => {
         setProcessing(false)
         console.log(err)
       })
+      setProcessing(false)
     }
   };
 
@@ -149,7 +160,7 @@ const Page = () => {
             ))}
           </ul>
           {Object.keys(formData.injuries).length > 0 ? (
-            <button type="submit" className="bg-blue-600 rounded-xl w-min p-2">
+            <button type="submit" className="bg-blue-600 rounded-xl w-min p-2 flex">
               {processing ? <img src='/loading.svg'/>:<></>}
               Submit
             </button>
