@@ -24,7 +24,8 @@
     "react": "^18",
     "react-dom": "^18",
     "react-hook-form": "^7.47.0",
-    "reactjs-human-body": "^0.0.8"
+    "reactjs-human-body": "^0.0.8",
+    "recharts": "^2.9.0"
   },
   "devDependencies": {
     "autoprefixer": "^10",

@@ -20,6 +20,30 @@ export const typeDefs = gql`
   type Query{
     allReports:[Report]
   }
+  type Query {
+    analyticsData: AnalyticsData!
+  }
+  
+  type AnalyticsData {
+    reporterData: [ReporterCount]!
+    dateData: [DateCount]!
+    injuryData:[BodyPartCount]!
+  }
+  
+  type ReporterCount {
+    reporter: String!
+    noOfReports: Int!
+  }
+  
+  type DateCount {
+    date: String!
+    noOfReports: Int!
+  }
+  type BodyPartCount{
+    body_part:String!,
+    noOfReports:Int!
+  }
+  
   input InjuryCreateInput {
     description: String!
     body_part: String!

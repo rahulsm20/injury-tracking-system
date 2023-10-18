@@ -1,10 +1,11 @@
 "use client";
-import React from "react";
 import { useUser } from "@auth0/nextjs-auth0/client";
 
 const Navbar = () => {
   const { user, error, isLoading } = useUser();
-  return (
+  return isLoading ? (
+    <></>
+  ) : (
     <div className="navbar flex items-center justify-between top-0 left-0 z-10 p-4">
       <div>
         <ul className="flex gap-5">
@@ -19,12 +20,23 @@ const Navbar = () => {
             </a>
           </li>
           <li>
+            <a href="/analytics" className="hover:text-blue-500">
+              Analytics
+            </a>
+          </li>
+          <li>
             {user ? (
-              <a href="/api/auth/logout" className="hover:text-blue-500 hover:bg-primary">
+              <a
+                href="/api/auth/logout"
+                className="hover:text-blue-500 hover:bg-primary"
+              >
                 Logout
               </a>
             ) : (
-              <a href="/api/auth/login" className="hover:text-blue-500 hover:bg-primary">
+              <a
+                href="/api/auth/login"
+                className="hover:text-blue-500 hover:bg-primary"
+              >
                 Login
               </a>
             )}
@@ -32,7 +44,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div>
-        <p>{user ? user.email: ""}</p>
+        <p className="hidden md:visible">{user ? user.email : ""}</p>
       </div>
     </div>
   );

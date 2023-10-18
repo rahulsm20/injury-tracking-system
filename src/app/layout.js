@@ -7,18 +7,18 @@ import { UserProvider, useUser } from "@auth0/nextjs-auth0/client";
 export const metadata = {
   title: "Injury Reporting System",
   description: "Injury reporting system",
-  themeColor:"#00000"
+  icons: { leif: "/favicon.ico" },
+  manifest: "/manifest.json",
 };
 
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <link rel='manifest' href='/manifest.json'/>
       <body className={inter.className}>
         <UserProvider>
           <Providers>
-                <Navbar />
-                {children}
+            <Navbar />
+            {children}
           </Providers>
         </UserProvider>
       </body>

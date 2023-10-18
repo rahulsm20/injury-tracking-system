@@ -7,9 +7,9 @@ import { useRouter } from 'next/navigation';
 import { useUser } from "@auth0/nextjs-auth0/client";
 const Page = () => {
     const {user,error,isLoading} = useUser();
-    if(!user){
+    if(isLoading){
       return(
-        <h1>Not logged in</h1>
+        <h1>Loading...</h1>
         )
       }
       
