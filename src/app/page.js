@@ -1,45 +1,110 @@
 "use client";
 import { CREATE_REPORT } from "@/graphql/mutations";
-import { useMutation } from "@apollo/client";
+import { GET_REPORT_BY_ID } from "@/graphql/queries";
+import parseDate from "@/utils/parseDate";
+import { useMutation, useQuery } from "@apollo/client";
+import { useUser } from "@auth0/nextjs-auth0/client";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useState } from "react";
 import { BodyComponent } from "reactjs-human-body";
-import { useRouter } from 'next/navigation';
-import { useUser } from "@auth0/nextjs-auth0/client";
 const Page = () => {
-    const {user,error,isLoading} = useUser();
-    if(isLoading){
-      return(
-        <h1>Loading...</h1>
-        )
+  const { user, error, isLoading } = useUser();
+  if (isLoading) {
+    return <h1>Loading...</h1>;
+  }
+  if (!user) {
+    return <h1>Please login to access this feature</h1>;
+  }
+  if (error) {
+    return <h1>{error.message}</h1>;
+  }
+
+  const date = new Date()
+  const {formattedDate,formattedTime} = parseDate(date)
+
+  const [formData, setFormData] = useState({
+    reporter: "",
+    date: formattedDate,
+    time: formattedTime,
+    injuries: {},
+  });
+
+  const [processing, setProcessing] = useState(false);
+  const params = useSearchParams();
+  const id = params.get("report_id");
+
+  const {
+    data,
+    loading,
+    error: queryError,
+  } = useQuery(GET_REPORT_BY_ID, {
+    variables: { reportId: id },
+  });
+
+  let bodyMap = {};
+  let item = [];
+  if (id) {
+    if (loading) {
+      console.log("fetching...");
+    }
+    if (queryError) {
+      console.log(queryError);
+    }
+    if (data && data.report) {
+      item = data.report;
+      let injury = {};
+      for (injury of item.injuries) {
+        if (!bodyMap[injury.body_part]) {
+          bodyMap[injury.body_part] = {};
+        }
+        bodyMap[injury.body_part].selected = true;
       }
-      if(!user){
-        return(
-          <h1>Please login to access this feature</h1>
-        )
-      }
-      if(error){
-        return(
-          <h1>{error.message}</h1>
-        )
-      }
-      
-      const router = useRouter()
-      const [formData, setFormData] = useState({
-        reporter: "",
-        date: "",
-        time: "",
-        injuries: {},
-      });
-      const [processing,setProcessing]  = useState(false);
+    }
+
+    if (item) {
+      return (
+        <div className="grid grid-cols-1 md:grid-cols-2 p-10 justify-center items-center text-sm md:text-base">
+          <div>
+            <p>{item.id}</p>
+            <p>Reported by: {item.reporter}</p>
+            <p>Reported date: {item.date} (YYYY-MM-DD)</p>
+            <p>Reported time: {item.time}</p>
+            {item &&
+              item.injuries &&
+              item.injuries.map((injury) => {
+                return (
+                  <div className="p-5">
+                    <p className="bg-red-500 rounded-t-xl p-2">
+                      {injury.body_part}
+                    </p>
+                    <p className="bg-white text-black rounded-b-xl p-2">
+                      {injury.description}
+                    </p>
+                  </div>
+                );
+              })}
+          </div>
+          {Object.keys(bodyMap).length > 0 ? (
+            <div>
+              <BodyComponent partsInput={bodyMap} />
+            </div>
+          ) : (
+            <></>
+          )}
+        </div>
+      );
+    }
+  }
+
+  const router = useRouter();
 
   const handleBodyPartClick = (partName) => {
     setFormData((prevData) => {
       const updatedInjuries = { ...prevData.injuries };
-      const propertyExists = updatedInjuries.hasOwnProperty(partName)
-      if(!propertyExists){
-          updatedInjuries[partName] = "";
-      }
-      else {
+      const propertyExists = updatedInjuries.hasOwnProperty(partName);
+      if (!propertyExists) {
+        updatedInjuries[partName] = "";
+      } else {
         delete updatedInjuries[partName];
       }
       return {
@@ -64,7 +129,7 @@ const Page = () => {
 
   const onSubmit = (e) => {
     e.preventDefault();
-    setProcessing(true)
+    setProcessing(true);
     if (
       formData.reporter === "" ||
       formData.date === "" ||
@@ -82,12 +147,11 @@ const Page = () => {
         })),
       };
       createReport({ variables: { input } })
-      .then(() => router.push('/reports'))
-      .catch((err)=>{
-        setProcessing(false)
-        console.log(err)
-      })
-      setProcessing(false)
+        .then(() => router.push("/reports"))
+        .catch((err) => {
+          setProcessing(false);
+        });
+      setProcessing(false);
     }
   };
 
@@ -126,6 +190,7 @@ const Page = () => {
           <input
             name="date"
             id="date"
+            value={formData.date}
             placeholder="Date"
             type="date"
             className="p-2 rounded-lg text-black"
@@ -135,6 +200,7 @@ const Page = () => {
             name="time"
             id="time"
             placeholder="Time"
+            value={formData.time}
             type="time"
             className="p-2 rounded-lg text-black"
             onChange={(e) => setFormData({ ...formData, time: e.target.value })}
@@ -160,8 +226,11 @@ const Page = () => {
             ))}
           </ul>
           {Object.keys(formData.injuries).length > 0 ? (
-            <button type="submit" className="bg-blue-600 rounded-xl w-min p-2 flex">
-              {processing ? <img src='/loading.svg'/>:<></>}
+            <button
+              type="submit"
+              className="bg-blue-600 rounded-xl w-min p-2 flex"
+            >
+              {processing ? <img src="/loading.svg" /> : <></>}
               Submit
             </button>
           ) : (

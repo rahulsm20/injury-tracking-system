@@ -3,6 +3,9 @@ import { GET_REPORTS } from "@/graphql/queries";
 import { useQuery } from "@apollo/client";
 import { Table } from "antd";
 import { useUser } from "@auth0/nextjs-auth0/client";
+import Link from "next/link";
+import { useDispatch } from "react-redux";
+import { setItems } from "@/store/itemSlice";
 
 const ReportsTable = () => {
   const columns = [
@@ -71,8 +74,23 @@ const ReportsTable = () => {
       showOnResponse: true,
       showOnDesktop: true,
     },
+    {
+      title:'Actions',
+      key:'id',
+      render:(text,record)=>{
+        console.log(text,record)
+        return(
+          <Link href={`/?report_id=${text.id}`} className="bg-black border hover:bg-slate-950 p-2 rounded-xl">View report</Link>
+        )
+      }
+    }
   ];
   const { data, loading, error } = useQuery(GET_REPORTS);
+  const dispatch = useDispatch()
+  if(data){
+    dispatch(setItems(data.allReports))
+    localStorage.setItem("allReports",JSON.stringify(data.allReports))
+  }
   if (loading) {
     return <h1>Loading...</h1>;
   }

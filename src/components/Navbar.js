@@ -10,17 +10,17 @@ const Navbar = () => {
       <div>
         <ul className="flex gap-5">
           <li>
-            <a href="/reports" className="hover:text-blue-500">
+            <a href="/reports" className="hover:text-blue-200">
               Reports
             </a>
           </li>
           <li>
-            <a href="/" className="hover:text-blue-500 hover:bg-primary">
+            <a href="/" className="hover:text-blue-200 hover:bg-primary">
               Create a report
             </a>
           </li>
           <li>
-            <a href="/analytics" className="hover:text-blue-500">
+            <a href="/analytics" className="hover:text-blue-200">
               Analytics
             </a>
           </li>
@@ -28,14 +28,14 @@ const Navbar = () => {
             {user ? (
               <a
                 href="/api/auth/logout"
-                className="hover:text-blue-500 hover:bg-primary"
+                className="hover:text-blue-200 hover:bg-primary"
               >
                 Logout
               </a>
             ) : (
               <a
                 href="/api/auth/login"
-                className="hover:text-blue-500 hover:bg-primary"
+                className="hover:text-blue-200 hover:bg-primary"
               >
                 Login
               </a>
@@ -44,7 +44,7 @@ const Navbar = () => {
         </ul>
       </div>
       <div>
-        <p className="hidden md:visible">{user ? user.email : ""}</p>
+        <p className="hidden md:block">{user ? user.email : ""}</p>
       </div>
     </div>
   );
